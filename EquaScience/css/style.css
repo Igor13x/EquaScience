@@ -1,0 +1,119 @@
+/* Estilos existentes */
+.imglogo {
+    float: left;
+    display: block;
+    margin-left: 14.4px;
+    margin-right: 14.4px;
+    width: 144px;
+}
+
+#select {
+    color: #2B16A3;
+    font-weight: bold;
+    text-shadow: 0px 1px 6px rgba(255, 255, 255, 0.5);
+}
+
+#nava {
+    margin-left: 14.4px;
+    font-weight: bold;
+    color: #2B16A3;
+}
+
+#nava:hover {
+    color: #000000;
+    transition: 0.5s;
+}
+
+#titlo {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #2B16A3;
+    font-size: 30px;
+    margin-top: 32px;
+    margin-left: 64px;
+}
+
+body {
+    background-image: url(../img/Background3.png);
+}
+
+#all {
+    background-color: #ffffff;
+    border-bottom: 2px solid #2B16A3;
+}
+
+#dark-card2 {
+    margin-top: 50px;
+    padding: 22px;
+    border: 2px solid #2B16A3;
+    border-radius: 18px;
+    background-color: #ffffff;
+    box-shadow: 2px 15px 20px 5px #1E0D1E;
+}
+
+#par {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    margin-left: 64px;
+    font-size: 20px;
+}
+
+#resultado-basicas,
+#resultado-mruv {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    margin-left: 64px;
+    font-size: 15px;
+}
+
+#vm, #dx, #dt, #v0, #v, #a, #t {
+    width: 100px;
+    margin-left: 20px;
+}
+#dark-card {
+    margin-top: 50px;
+    padding: 22px;
+    border: 2px solid #2B16A3;
+    border-radius: 18px;
+    background-color: #ffffff;
+    color: #4534a7;
+    box-shadow: 2px 15px 20px 5px rgba(30, 13, 30, 0.5);
+}
+p{
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    margin-left: 64px;
+    font-size: 16px;
+}
+#massa, #aceleracao {
+    width: 100px;
+    margin-left: 20px;
+}
+
+#resultado-mecanica {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    margin-left: 64px;
+    font-size: 15px;
+}
+#corrente, #resistencia {
+    width: 100px;
+    margin-left: 20px;
+}
+
+#resultado-eletronica {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    margin-left: 64px;
+    font-size: 15px;
+}
