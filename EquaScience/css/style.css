@@ -1,4 +1,16 @@
 /* Estilos existentes */
+body{
+    overflow-y: scroll;
+}
+
+.a{
+    text-decoration: none;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+    color: #4534a7;
+    margin-top: 32px;
+    font-size: 20px;
+}
 .imglogo {
     float: left;
     display: block;
@@ -40,16 +52,18 @@ body {
 #all {
     background-color: #ffffff;
     border-bottom: 2px solid #2B16A3;
+    
 }
 
 #dark-card2 {
     margin-top: 50px;
-    padding: 22px;
     border: 2px solid #2B16A3;
     border-radius: 18px;
     background-color: #ffffff;
+    color: #4534a7;
     box-shadow: 2px 15px 20px 5px #1E0D1E;
 }
+
 
 #par {
     font-family: Verdana, Tahoma, sans-serif;
@@ -74,6 +88,7 @@ body {
     width: 100px;
     margin-left: 20px;
 }
+
 #dark-card {
     margin-top: 50px;
     padding: 22px;
@@ -81,9 +96,10 @@ body {
     border-radius: 18px;
     background-color: #ffffff;
     color: #4534a7;
-    box-shadow: 2px 15px 20px 5px rgba(30, 13, 30, 0.5);
+    box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
 }
-p{
+
+p {
     font-family: Verdana, Tahoma, sans-serif;
     font-weight: bold;
     color: #4534a7;
@@ -91,6 +107,7 @@ p{
     margin-left: 64px;
     font-size: 16px;
 }
+
 #massa, #aceleracao {
     width: 100px;
     margin-left: 20px;
@@ -104,6 +121,7 @@ p{
     margin-left: 64px;
     font-size: 15px;
 }
+
 #corrente, #resistencia {
     width: 100px;
     margin-left: 20px;
@@ -116,4 +134,67 @@ p{
     margin-top: 32px;
     margin-left: 64px;
     font-size: 15px;
+}
+.accordion {
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.accordion-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+    cursor: pointer; 
+    width: 100%;
+}
+
+.accordion-header {
+    margin-bottom: 0;
+}
+
+
+.accordion-collapse {
+    background-color: #ffffff; 
+    padding: 15px; 
+    border: 1px solid #007bff;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.accordion-body p {
+    color: #4534a7;
+    line-height: 1.6;
+    margin: 0; 
+}
+
+.accordion-body ul {
+    padding-left: 20px;
+}
+
+.accordion-body li {
+    margin-bottom: 5px;
+    position: relative;
+}
+.accordion-body li::before {
+    content: '•';
+    color: #007bff;
+    position: absolute;
+    left: -20px; 
+}
+
+.accordion-button:after {
+    content: '\25bc';
+    float: right; 
+    font-size: 18px; 
+    transition: transform 0.3s;
+}
+
+.accordion-button.collapsed:after {
+    transform: rotate(-180deg);
 }

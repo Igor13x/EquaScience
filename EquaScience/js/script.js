@@ -3,16 +3,14 @@ function calcularGrandezas() {
     const deltaX = document.getElementById('deltaX').value;
     const deltaT = document.getElementById('deltaT').value;
 
-    if (vm && deltaX && deltaT) {
-        document.getElementById('resultado').textContent = "Preencha apenas dois campos.";
-    } else if (vm && deltaX) {
+    if (vm && deltaX) {
         document.getElementById('resultado').textContent = `Δt = ${deltaX / vm} s`;
     } else if (vm && deltaT) {
         document.getElementById('resultado').textContent = `Δx = ${vm * deltaT} m`;
     } else if (deltaX && deltaT) {
         document.getElementById('resultado').textContent = `Vm = ${deltaX / deltaT} m/s`;
     } else {
-        document.getElementById('resultado').textContent = "Preencha dois campos.";
+        document.getElementById('resultado').textContent = "Preencha dois dos três campos.";
     }
 }
 
@@ -22,43 +20,57 @@ function calcularMRUV() {
     const deltaXmruv = document.getElementById('deltaXmruv').value;
     const deltaTmruv = document.getElementById('deltaTmruv').value;
 
-    if (vmruv && deltaTmruv && a) {
+    if (vmruv && deltaTmruv) {
         const deltaXCalc = vmruv * deltaTmruv + (0.5 * a * Math.pow(deltaTmruv, 2));
         document.getElementById('resultadoMRUV').textContent = `Δx = ${deltaXCalc} m`;
+    } else if (a && deltaTmruv) {
+        const vmruvCalc = (deltaXmruv - (0.5 * a * Math.pow(deltaTmruv, 2))) / deltaTmruv;
+        document.getElementById('resultadoMRUV').textContent = `Vm = ${vmruvCalc} m/s`;
+    } else if (deltaXmruv && deltaTmruv) {
+        const aCalc = (2 * (deltaXmruv - (vmruv * deltaTmruv))) / Math.pow(deltaTmruv, 2);
+        document.getElementById('resultadoMRUV').textContent = `Aceleração (a) = ${aCalc} m/s²`;
     } else {
-        document.getElementById('resultadoMRUV').textContent = "Preencha todos os campos.";
+        document.getElementById('resultadoMRUV').textContent = "Preencha dois dos quatro campos.";
     }
 }
 
 function calcularQuedaLivre() {
     const h = document.getElementById('h').value;
     const t = document.getElementById('t').value;
-    const g = document.getElementById('g').value;
+    const g = document.getElementById('g').value || 9.8; // Valor padrão da gravidade
 
-    if (h && t) {
-        document.getElementById('resultadoQuedaLivre').textContent = "Preencha apenas um campo.";
-    } else if (h && g) {
+    if (h) {
         const tempoCalc = Math.sqrt((2 * h) / g);
         document.getElementById('resultadoQuedaLivre').textContent = `Tempo (t) = ${tempoCalc.toFixed(2)} s`;
-    } else if (t && g) {
+    } else if (t) {
         const alturaCalc = 0.5 * g * Math.pow(t, 2);
         document.getElementById('resultadoQuedaLivre').textContent = `Altura (h) = ${alturaCalc.toFixed(2)} m`;
     } else {
-        document.getElementById('resultadoQuedaLivre').textContent = "Preencha um campo.";
+        document.getElementById('resultadoQuedaLivre').textContent = "Preencha um dos campos.";
     }
 }
+
 function calcularForca() {
-    const massa = document.getElementById('massa').value;
-    const aceleracao = document.getElementById('aceleracao').value;
+    const massaInput = document.getElementById('massa');
+    const aceleracaoInput = document.getElementById('aceleracao');
+    const resultadoElement = document.getElementById('resultado-forca');
 
-    if (massa && aceleracao) {
-        const forca = massa * aceleracao;
-        document.getElementById('resultado-mecanica').textContent = `Força (F) = ${forca} N`;
-    } else {
-        document.getElementById('resultado-mecanica').textContent = "Por favor, insira valores válidos para massa e aceleração.";
+    // Obtendo os valores e convertendo para números
+    const massa = parseFloat(massaInput.value);
+    const aceleracao = parseFloat(aceleracaoInput.value);
+
+    // Verificando se os valores de massa e aceleração são válidos
+    if (isNaN(massa) || isNaN(aceleracao)) {
+        resultadoElement.textContent = "Por favor, insira valores válidos para massa e aceleração.";
+        return;
     }
-}
 
+    // Calculando a força
+    const forca = massa * aceleracao;
+
+    // Exibindo o resultado formatado
+    resultadoElement.textContent = `Força (F) = ${forca.toFixed(2)} N`;
+}
 function calcularTensao() {
     const corrente = document.getElementById('corrente').value;
     const resistencia = document.getElementById('resistencia').value;
@@ -69,4 +81,70 @@ function calcularTensao() {
     } else {
         document.getElementById('resultado-eletronica').textContent = "Por favor, insira valores válidos para corrente e resistência.";
     }
+}
+
+function calcularHooke() {
+    const forca = parseFloat(document.getElementById("forca").value);
+    const k = parseFloat(document.getElementById("k").value);
+    const deformacao = parseFloat(document.getElementById("deformacao").value);
+    let resultado = '';
+
+    if (forca && k) {
+        resultado = (forca / k).toFixed(2) + ' m';
+        document.getElementById("deformacao").value = resultado;
+    } else if (forca && deformacao) {
+        resultado = (forca / deformacao).toFixed(2) + ' N/m';
+        document.getElementById("k").value = resultado;
+    } else if (k && deformacao) {
+        resultado = (k * deformacao).toFixed(2) + ' N';
+        document.getElementById("forca").value = resultado;
+    } else {
+        resultado = 'Por favor, insira dois dos três valores.';
+    }
+
+    document.getElementById("resultado-hooke").innerText = 'Resultado: ' + resultado;
+}
+
+function calcularEnergiaCinetica() {
+    const massa = parseFloat(document.getElementById("massa-ec").value);
+    const velocidade = parseFloat(document.getElementById("velocidade-ec").value);
+    let resultado = '';
+
+    if (massa && velocidade) {
+        resultado = (0.5 * massa * Math.pow(velocidade, 2)).toFixed(2) + ' J';
+    } else {
+        resultado = 'Por favor, insira ambos os valores.';
+    }
+
+    document.getElementById("resultado-ec").innerText = 'Resultado: ' + resultado;
+}
+
+function calcularTrabalho() {
+    const forca = parseFloat(document.getElementById("forca-trabalho").value);
+    const distancia = parseFloat(document.getElementById("distancia").value);
+    const angulo = parseFloat(document.getElementById("angulo").value);
+    let resultado = '';
+
+    if (forca && distancia && angulo !== undefined) {
+        const radianos = angulo * (Math.PI / 180); // Convertendo graus para radianos
+        resultado = (forca * distancia * Math.cos(radianos)).toFixed(2) + ' J';
+    } else {
+        resultado = 'Por favor, insira todos os valores.';
+    }
+
+    document.getElementById("resultado-trabalho").innerText = 'Resultado: ' + resultado;
+}
+
+function calcularImpulso() {
+    const forca = parseFloat(document.getElementById("forca-impulso").value);
+    const deltaT = parseFloat(document.getElementById("deltaT-impulso").value);
+    let resultado = '';
+
+    if (forca && deltaT) {
+        resultado = (forca * deltaT).toFixed(2) + ' Ns';
+    } else {
+        resultado = 'Por favor, insira ambos os valores.';
+    }
+
+    document.getElementById("resultado-impulso").innerText = 'Resultado: ' + resultado;
 }

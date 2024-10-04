@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt br">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="png" sizes="16x16" href="img/EquaScience.png">
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
     <title>EquaScience</title>
 </head>
+
 <body>
     <header class="container-fluid" id="all">
         <div class="row py-4">
-            <div class="col-sm-8 col-xs-4 py-2">
+            <div class="col-sm-8 col-12 py-2">
                 <a href="index.html">
-                    <img src="img/EquaScience.png" class="imglogo" alt="">
+                    <img src="img/EquaScience.png" class="img-fluid imglogo" alt="Logo EquaScience">
                 </a>
-                
             </div>
-            <div class="col-sm-4 col-xs-4 py-2" id="home">
-                <ul class="nav nav-underline">
+            <div class="col-sm-4 col-12 py-2" id="home">
+                <ul class="nav nav-underline justify-content-end">
                     <li class="nav-item">
                         <a id="select" class="nav-link" aria-current="page" href="index.html">Início</a>
                     </li>
@@ -28,7 +27,7 @@
                         <a id="nava" class="nav-link" href="fisica.html">Física</a>
                     </li>
                     <li class="nav-item">
-                        <a id="nava" class="nav-link active " href="eletro.html">Eletrônica</a>
+                        <a id="nava" class="nav-link active" href="eletro.html">Eletrônica</a>
                     </li>
                     <li class="nav-item">
                         <a id="nava" class="nav-link" href="mec.html">Mecânica</a>
@@ -38,26 +37,119 @@
         </div>
     </header>
 
-    <div class="container" id="dark-card">
-        <h1 id="titlo">Fórmulas da Eletrônica</h1>
-        <p id="par">Cálculo da Tensão (V = I × R)</p>
+    <div class="container" id="dark-card2">
+        <h1 id="titlo">Fórmulas da Eletrônica</h1> 
+        <div class="accordion" id="accordionFizica">
+            <!-- Grandezas Básicas -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                        Grandezas Básicas
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par">As grandezas básicas são fundamentais na física. Elas representam as quantidades essenciais para descrever movimentos e interações. As três principais grandezas são:</p>
+                        <ul>
+                            <li><strong>Vm (Velocidade média):</strong> É a razão entre o deslocamento e o intervalo de tempo.</li>
+                            <li><strong>Δx (Deslocamento):</strong> É a diferença entre a posição final e a posição inicial de um objeto.</li>
+                            <li><strong>Δt (Intervalo de tempo):</strong> É o tempo decorrido entre dois eventos.</li>
+                        </ul>
+                        <p id="par">A fórmula da velocidade média é:</p>
+                        <p><strong>Vm = Δx / Δt</strong></p>
+                        <input type="text" id="vm" name="vm" placeholder="Vm (m/s)" />
+                        <input type="text" id="deltaX" name="deltaX" placeholder="Δx (m)" />
+                        <input type="text" id="deltaT" name="deltaT" placeholder="Δt (s)" />
+                        <button type="button" onclick="calcularGrandezas()">Calcular Grandezas Básicas</button>
+                        <p id="resultado"></p>
+                    </div>
+                </div>
+            </div>
 
-        <label for="corrente">Corrente (I):</label>
-        <input type="number" id="corrente" placeholder="A">
+            <!-- MRUV -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                        MRUV
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par">O Movimento Retilíneo Uniformemente Variado (MRUV) ocorre quando um objeto se desloca em linha reta, e sua aceleração é constante. Os principais elementos dessa fórmula são:</p>
+                        <ul>
+                            <li><strong>Vm:</strong> Velocidade final do objeto.</li>
+                            <li><strong>a:</strong> Aceleração do objeto.</li>
+                            <li><strong>Δx:</strong> Deslocamento do objeto durante o movimento.</li>
+                            <li><strong>Δt:</strong> Tempo total do movimento.</li>
+                        </ul>
+                        <p id="par">A fórmula básica é dada por:</p>
+                        <p><strong>Vm = V0 + a × Δt</strong></p>
+                        <input type="text" id="vmruv" name="vmruv" placeholder="Vm (m/s)" />
+                        <input type="text" id="a" name="a" placeholder="a (m/s²)" />
+                        <input type="text" id="deltaXmruv" name="deltaXmruv" placeholder="Δx (m)" />
+                        <input type="text" id="deltaTmruv" name="deltaTmruv" placeholder="Δt (s)" />
+                        <button type="button" onclick="calcularMRUV()">Calcular MRUV</button>
+                        <p id="resultadoMRUV"></p>
+                    </div>
+                </div>
+            </div>
 
-        <label for="resistencia">Resistência (R):</label>
-        <input type="number" id="resistencia" placeholder="Ω">
+            <!-- Queda Livre -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        Queda Livre
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par">A Queda Livre refere-se ao movimento de um objeto que está sob a influência da gravidade, sem resistência do ar. Os principais aspectos são:</p>
+                        <ul>
+                            <li><strong>h:</strong> Altura de onde o objeto é solto.</li>
+                            <li><strong>g:</strong> Aceleração gravitacional, que é aproximadamente 9.8 m/s².</li>
+                            <li><strong>t:</strong> O tempo que o objeto leva para atingir o solo.</li>
+                        </ul>
+                        <p id="par">A fórmula para calcular a altura em função do tempo é:</p>
+                        <p><strong>h = (1/2) × g × t²</strong></p>
+                        <input type="text" id="h" name="h" placeholder="Altura (h)" />
+                        <input type="text" id="t" name="t" placeholder="Tempo (t)" />
+                        <input type="text" id="g" name="g" placeholder="Gravidade (g = 9.8)" value="9.8" />
+                        <button type="button" onclick="calcularQuedaLivre()">Calcular Queda Livre</button>
+                        <p id="resultadoQuedaLivre"></p>
+                    </div>
+                </div>
+            </div>
 
-        <button onclick="calcularTensao()">Calcular Tensão</button>
-
-        <p id="resultado-eletronica"></p>
-    </div>
-
+            <!-- Cálculo da Força -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                        Cálculo da Força (F = m × a)
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par">A força é uma interação que pode causar uma mudança no estado de movimento de um objeto. A fórmula utilizada para calcular a força é:</p>
+                        <p><strong>F = m × a</strong></p>
+                        <p id="par">Onde:</p>
+                        <ul>
+                            <li><strong>F:</strong> Força aplicada (em Newtons).</li>
+                            <li><strong>m:</strong> Massa do objeto (em quilogramas).</li>
+                            <li><strong>a:</strong> Aceleração resultante (em m/s²).</li>
+                        </ul>
+                        <label for="massa">Massa (m):</label>
+                        <input type="number" id="massa" placeholder="kg" required>
+                        <label for="aceleracao">Aceleração (a):</label>
+                        <input type="number" id="aceleracao" placeholder="m/s²" required>
+                        <button type="button" onclick="calcularForca()">Calcular Força</button>
+                        <p id="resultado-forca"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
     <script src="js/script.js"></script>
-
 </body>
 </html>
