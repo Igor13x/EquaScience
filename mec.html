@@ -40,31 +40,149 @@
     <div class="container" id="dark-card2">
         <h1 id="titlo">Fórmulas da Mecânica</h1>
         <div class="accordion" id="accordionFizica">
-         <!-- Cálculo da Força -->
-         <div class="accordion-item">
-            <h2 class="accordion-header" id="heading4">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                    Cálculo da Força (F = m × a)
-                </button>
-            </h2>
-            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordionFizica">
-                <div class="accordion-body">
-                    <p id="par" class="mb-3">A força é uma grandeza vetorial que causa a aceleração de um corpo. A fórmula básica para calcular a força é:</p>
-                    <p><strong>F = m × a</strong></p>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="m" name="m" placeholder="Massa (m)" />
+
+            <!-- Cálculo da Força -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading1">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                        Cálculo da Força (F = m × a)
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">A força é uma grandeza vetorial que causa a aceleração de um corpo. A fórmula básica para calcular a força é:</p>
+                        <p><strong>F = m × a</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="m" name="m" placeholder="Massa (m)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="aForca" name="aForca" placeholder="Aceleração (a)" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularForca()">Calcular Força</button>
+                        <p id="resultadoForca"></p>
                     </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control mb-3" id="aForca" name="aForca" placeholder="Aceleração (a)" />
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="calcularForca()">Calcular Força</button>
-                    <p id="resultadoForca"></p>
                 </div>
             </div>
+
+            <!-- Aceleração -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                        Cálculo da Aceleração (a = Δv / Δt)
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">A aceleração é a taxa de variação da velocidade em relação ao tempo.</p>
+                        <p><strong>a = Δv / Δt</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="dv" name="dv" placeholder="Variação de Velocidade (Δv)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="dt" name="dt" placeholder="Intervalo de Tempo (Δt)" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularAceleracao()">Calcular Aceleração</button>
+                        <p id="resultadoAceleracao"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Velocidade Média -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        Velocidade Média (Vm = Δx / Δt)
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">A velocidade média é a razão entre a variação da posição e o tempo total gasto.</p>
+                        <p><strong>Vm = Δx / Δt</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="dx" name="dx" placeholder="Variação de Posição (Δx)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="dTempo" name="dTempo" placeholder="Intervalo de Tempo (Δt)" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularVelocidadeMedia()">Calcular Velocidade Média</button>
+                        <p id="resultadoVm"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Momento Linear -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                        Momento Linear (p = m × v)
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">O momento linear de um corpo é o produto da massa pela sua velocidade.</p>
+                        <p><strong>p = m × v</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="massaMomento" name="massaMomento" placeholder="Massa (m)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="velocidadeMomento" name="velocidadeMomento" placeholder="Velocidade (v)" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularMomentoLinear()">Calcular Momento Linear</button>
+                        <p id="resultadoMomento"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Potência Mecânica -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                        Potência Mecânica (P = W / Δt)
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">A potência é a razão entre o trabalho realizado e o tempo.</p>
+                        <p><strong>P = W / Δt</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="trabalho" name="trabalho" placeholder="Trabalho (W)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="tempoPotencia" name="tempoPotencia" placeholder="Intervalo de Tempo (Δt)" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularPotenciaMecanica()">Calcular Potência</button>
+                        <p id="resultadoPotencia"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Força Peso -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading6">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                        Força Peso (P = m × g)
+                    </button>
+                </h2>
+                <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordionFizica">
+                    <div class="accordion-body">
+                        <p id="par" class="mb-3">A força peso é a força com que a Terra atrai um corpo devido à gravidade.</p>
+                        <p><strong>P = m × g</strong></p>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="massaPeso" name="massaPeso" placeholder="Massa (m)" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-3" id="gravidade" name="gravidade" placeholder="Aceleração da Gravidade (g)" value="9.8" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="calcularForcaPeso()">Calcular Força Peso</button>
+                        <p id="resultadoPeso"></p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>

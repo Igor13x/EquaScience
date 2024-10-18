@@ -122,7 +122,7 @@ function calcularTrabalho() {
     let resultado = '';
 
     if (forca && distancia && angulo !== undefined) {
-        const radianos = angulo * (Math.PI / 180); // Convertendo graus para radianos
+        const radianos = angulo * (Math.PI / 180);
         resultado = (forca * distancia * Math.cos(radianos)).toFixed(2) + ' J';
     } else {
         resultado = 'Por favor, insira todos os valores.';
@@ -143,4 +143,64 @@ function calcularImpulso() {
     }
 
     document.getElementById("resultado-impulso").innerText = 'Resultado: ' + resultado;
+}
+function calcularAceleracao() {
+    const variacaoVelocidade = parseFloat(document.getElementById('dv').value);
+    const intervaloTempo = parseFloat(document.getElementById('dt').value);
+    
+    if (!isNaN(variacaoVelocidade) && !isNaN(intervaloTempo) && intervaloTempo !== 0) {
+        const aceleracao = variacaoVelocidade / intervaloTempo;
+        document.getElementById('resultadoAceleracao').innerText = `A aceleração é: ${aceleracao.toFixed(2)} m/s²`;
+    } else {
+        document.getElementById('resultadoAceleracao').innerText = 'Por favor, insira valores válidos e certifique-se de que Δt não seja zero.';
+    }
+}
+
+
+function calcularVelocidadeMedia() {
+    const variacaoPosicao = parseFloat(document.getElementById('dx').value);
+    const intervaloTempo = parseFloat(document.getElementById('dTempo').value);
+    
+    if (!isNaN(variacaoPosicao) && !isNaN(intervaloTempo) && intervaloTempo !== 0) {
+        const velocidadeMedia = variacaoPosicao / intervaloTempo;
+        document.getElementById('resultadoVm').innerText = `A velocidade média é: ${velocidadeMedia.toFixed(2)} m/s`;
+    } else {
+        document.getElementById('resultadoVm').innerText = 'Por favor, insira valores válidos e certifique-se de que Δt não seja zero.';
+    }
+}
+
+function calcularMomentoLinear() {
+    const massa = parseFloat(document.getElementById('massaMomento').value);
+    const velocidade = parseFloat(document.getElementById('velocidadeMomento').value);
+    
+    if (!isNaN(massa) && !isNaN(velocidade)) {
+        const momentoLinear = massa * velocidade;
+        document.getElementById('resultadoMomento').innerText = `O momento linear é: ${momentoLinear.toFixed(2)} kg·m/s`;
+    } else {
+        document.getElementById('resultadoMomento').innerText = 'Por favor, insira valores válidos.';
+    }
+}
+
+function calcularPotenciaMecanica() {
+    const trabalho = parseFloat(document.getElementById('trabalho').value);
+    const intervaloTempo = parseFloat(document.getElementById('tempoPotencia').value);
+    
+    if (!isNaN(trabalho) && !isNaN(intervaloTempo) && intervaloTempo !== 0) {
+        const potencia = trabalho / intervaloTempo;
+        document.getElementById('resultadoPotencia').innerText = `A potência é: ${potencia.toFixed(2)} W`;
+    } else {
+        document.getElementById('resultadoPotencia').innerText = 'Por favor, insira valores válidos e certifique-se de que Δt não seja zero.';
+    }
+}
+
+function calcularForcaPeso() {
+    const massa = parseFloat(document.getElementById('massaPeso').value);
+    const gravidade = parseFloat(document.getElementById('gravidade').value);
+    
+    if (!isNaN(massa) && !isNaN(gravidade)) {
+        const peso = massa * gravidade;
+        document.getElementById('resultadoPeso').innerText = `A força peso é: ${peso.toFixed(2)} N`;
+    } else {
+        document.getElementById('resultadoPeso').innerText = 'Por favor, insira valores válidos.';
+    }
 }
