@@ -3,6 +3,48 @@ body{
     overflow-y: scroll;
 }
 
+
+.bg1{
+    background-color: white;
+}
+#nav-item{
+    color:#4534a7;
+    margin: 0 10px;
+    display:inline-block;
+    margin: 0.1rem 0.5rem;
+    padding: 0.5rem;
+    transition: 200ms ease-in-out;
+    text-decoration: none;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+}
+#nav-item:hover{
+    opacity: 0.5;
+}
+#nav-item-page{
+    background-color: #4534a7;
+    color:white;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    margin: 0 10px;
+    display:inline-block;
+    margin: 0.2rem 1rem;
+    text-decoration: none;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+}
+#burger{
+    color:rgba(0,0,0,0);
+    border: 0;
+    outline: none;
+    border-color:blue;
+}
+#burger:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+
 .a{
     text-decoration: none;
     font-family: Verdana, Tahoma, sans-serif;
