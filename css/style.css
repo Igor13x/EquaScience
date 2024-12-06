@@ -121,11 +121,6 @@ p {
     font-size: 15px;
 }
 
-#corrente, #resistencia {
-    width: 100px;
-    margin-left: 20px;
-}
-
 #resultado-eletronica {
     font-family: Verdana, Tahoma, sans-serif;
     font-weight: bold;
