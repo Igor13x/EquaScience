@@ -89,6 +89,7 @@ body{
 
 body {
     background-image: url(../img/Background3.png);
+    overflow-x: hidden;
 }
 
 #all {
