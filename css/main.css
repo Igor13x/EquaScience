@@ -54,11 +54,10 @@ body{
     font-size: 20px;
 }
 .imglogo {
-    float: left;
-    display: block;
-    margin-left: 14.4px;
-    margin-right: 14.4px;
-    width: 144px;
+    float: center;
+    display: flex;
+    margin: auto;
+    width: 10rem;
 }
 
 #select {
@@ -82,9 +81,9 @@ body{
     font-family: Verdana, Tahoma, sans-serif;
     font-weight: bold;
     color: #2B16A3;
-    font-size: 30px;
-    margin-top: 32px;
-    margin-left: 64px;
+    font-size: 2rem;
+    /* margin-top: 32px;
+    margin-left: 64px; */
 }
 
 body {
@@ -132,13 +131,14 @@ body {
 } */
 
 #dark-card {
-    margin-top: 50px;
-    padding: 22px;
+    margin-top: 2rem;
+    padding: 1rem;
     border: 2px solid #2B16A3;
     border-radius: 18px;
     background-color: #ffffff;
     color: #4534a7;
     box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
+    /* width: 80%; */
 }
 
 p {
