@@ -82,8 +82,8 @@ body{
     font-weight: bold;
     color: #2B16A3;
     font-size: 2rem;
-    /* margin-top: 32px;
-    margin-left: 64px; */
+    margin-top: 2rem;
+    margin-left: 2rem;
 }
 
 body {
@@ -94,6 +94,7 @@ body {
 #all {
     background-color: #ffffff;
     border-bottom: 2px solid #2B16A3;
+    height: 15vh;
 }
 
 #dark-card2 {
@@ -129,6 +130,24 @@ body {
     width: 100px;
     margin-left: 20px;
 } */
+#results{
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 2px solid #2B16A3;
+    border-radius: 18px;
+    background-color: #ffffff;
+    color: #4534a7;
+    box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
+}
+#forms{
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 2px solid #2B16A3;
+    border-radius: 18px;
+    background-color: #ffffff;
+    color: #4534a7;
+    box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
+}
 
 #dark-card {
     margin-top: 2rem;
@@ -139,6 +158,15 @@ body {
     color: #4534a7;
     box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
     /* width: 80%; */
+}
+#content-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 2px solid #2B16A3;
+    border-radius: 18px;
+    background-color: #ffffff;
+    color: #4534a7;
+    box-shadow: 2px 15px 20px rgba(30, 13, 30, 0.5);
 }
 
 p {
@@ -296,4 +324,31 @@ p {
 .btn-sm {
     font-size: 0.875rem;
     padding: 0.375rem 0.75rem;
+}
+/* Exemplo de como esconder a tela de login */
+.logged-in {
+    display: none;
+}
+#all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Certifique-se que o contêiner ocupe toda a altura da tela */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px; /* Ajuste conforme a largura máxima que deseja */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#login-container {
+    /* Aqui você pode garantir que o login ocupe a altura adequada antes de ser removido */
+    display: block;
+}
+
+#content-container {
+    display: none; /* Inicialmente escondido */
+    padding-top: 2rem;
 }

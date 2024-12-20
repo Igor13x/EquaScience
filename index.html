@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
     <title>EquaScience</title>
 </head>
 
@@ -19,7 +20,36 @@
         </div>
     </header>
 
-    <div class="container" id="dark-card">
+    <div class="container d-flex justify-content-center align-items-center mt-2">
+        <div id="login-container" class="card p-4 shadow-lg" style="width: 100%; max-width: 400px; border-radius: 10px;">
+            <h3 class="text-center mb-4">Bem-vindo ao EquaScience!</h3>
+
+            <div id="dark-card" class="mb-3">
+                <input type="email" id="email" class="form-control mb-2" placeholder="Email" required>
+                <input type="password" id="password" class="form-control mb-2" placeholder="Senha" required>
+                <button onclick="loginUser()" class="btn btn-primary w-100 mb-2">Login</button>
+                <button onclick="registerUser()" class="btn btn-outline-primary w-100">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="content-container" style="display: none;">
+        <h1 id="titlo">Seja Bem-Vindo ao EquaScience!</h1>
+    
+        <p>
+            Este é um site dedicado a criar, calcular e gerenciar fórmulas científicas de maneira fácil e prática. Você pode adicionar elementos às fórmulas e até mesmo calcular o resultado com base nos valores que definir.
+            <br><br>
+            O que fazer a seguir?
+            <br><br>
+            Criar uma Fórmula: Clique em "Criar Fórmula" e forneça um nome, descrição, categoria e a expressão matemática que deseja utilizar. Você também pode adicionar elementos à fórmula, definindo identificadores, descrições, valores e se são constantes.
+            <br><br>
+            Adicionar Elementos: Selecione "Adicionar Elemento" para incluir variáveis, constantes e seus respectivos valores na fórmula.
+            <br><br>
+            Salvar e Calcular: Após preencher tudo, clique em "Salvar Fórmula". Você pode, então, calcular o resultado da fórmula a qualquer momento, e também editar ou excluir as fórmulas que já criou.
+        </p>
+    </div>
+
+    <div class="container" id="forms" style="display: none;">
         <div class="formula-container">
             <h2>Criar Fórmula</h2>
             <div class="form-group mb-1">
@@ -48,11 +78,13 @@
                     <i class="bi bi-plus-circle"></i> Adicionar Elemento
                 </button>
                 <button class="btn btn-outline-success" id="save-formula-btn">Salvar Fórmula</button>
+                <button class="btn btn-outline-danger" id="cancel-edit-btn" style="display: none;">Cancelar</button>
+
             </div>
         </div>
     </div>
 
-    <div class="container" id="dark-card">
+    <div class="container" id="results" style="display: none;">
         <div id="result-container" class="my-4">
             <h3>Resultado da Fórmula:</h3>
             <div id="calculation-result"></div>
@@ -69,6 +101,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
         import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAV4ufNzH_l-o7YWueyzccFirjSpCXaBEw",
@@ -82,61 +115,197 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
         const database = getDatabase(app);
+
+        window.hideContentUntilLoggedIn = function() {
+        // Esconde o conteúdo principal e exibe a tela de login
+        document.getElementById('content-container').style.display = 'none';
+        document.getElementById('login-container').style.display = 'block';  // Garante que o login esteja visível
+    };
+
+    window.showContentAfterLogin = function() {
+        // Exibe o conteúdo principal
+        document.getElementById('content-container').style.display = 'block';
+
+        // Exibe o formulário de criação de fórmula (dark-card)
+        document.getElementById('forms').style.display = 'block';
+
+        // Exibe o container de resultados
+        document.getElementById('results').style.display = 'block';
+
+        // Remove o login-container completamente
+        const loginContainer = document.getElementById('login-container');
+        if (loginContainer) {
+            loginContainer.style.display = 'none'; // Esconde o login-container
+        }
+    };
+
+
+// Função para verificar o estado do login
+window.checkUserLoginStatus = function() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            showContentAfterLogin();
+        } else {
+            hideContentUntilLoggedIn();
+        }
+    });
+};
+
+// Verifica o login no carregamento da página
+window.checkUserLoginStatus();
+        // Garantir que as funções sejam globais
+        window.hideLoginScreen = function() {
+    document.getElementById('login-container').classList.add('logged-in');
+    document.getElementById('dark-card').style.display = 'none';  // Esconde o cartão de login
+};
+
+// Função para mostrar a tela de login
+window.showLoginScreen = function() {
+    document.getElementById('login-container').classList.remove('logged-in');
+    document.getElementById('dark-card').style.display = 'block';  // Mostra o cartão de login
+};
+
+// Verifica se o usuário já está logado ao carregar a página
+window.checkUserLoginStatus = function() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Se o usuário estiver logado, esconde a tela de login
+            window.hideLoginScreen();
+            console.log("Usuário já logado:", user);
+        } else {
+            // Se não estiver logado, mostra a tela de login
+            window.showLoginScreen();
+            console.log("Nenhum usuário logado.");
+        }
+    });
+};
+
+// Função de login
+onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuário está logado
+                document.getElementById('login-container').style.display = 'none';
+                loadFormulas();
+            } else {
+                // Usuário não está logado
+                document.getElementById('login-container').style.display = 'block';
+            }
+        });
+
+        // Função de login de usuário
+        function loginUser() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log("Login bem-sucedido");
+                })
+                .catch((error) => {
+                    console.error("Erro no login:", error.message);
+                });
+        }
+
+        // Função de registro de usuário
+        function registerUser() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log("Usuário registrado com sucesso");
+                })
+                .catch((error) => {
+                    console.error("Erro no registro:", error.message);
+                });
+        }
+
+// Chama a função de verificação no carregamento da página
+window.addEventListener('load', function() {
+    window.checkUserLoginStatus();  // Verifica o estado de login do usuário ao carregar a página
+});
+
+        window.registerUser = function() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("Registro bem-sucedido!", user);
+                })
+                .catch((error) => {
+                    console.error("Erro ao registrar:", error.message);
+                });
+        };
+
 
         let formulaIdBeingEdited = null;  // Variável para armazenar o ID da fórmula em edição
 
         // Função para salvar fórmula no banco de dados
         async function saveFormula() {
-            const nome = document.getElementById('formula-name').value;
-            const desc = document.getElementById('formula-desc').value;
-            const categoria = document.getElementById('formula-category').value;
-            const expressao = document.getElementById('formula-expression').value;
+    const nome = document.getElementById('formula-name').value;
+    const desc = document.getElementById('formula-desc').value;
+    const categoria = document.getElementById('formula-category').value;
+    const expressao = document.getElementById('formula-expression').value;
 
-            const formulaElementos = {};
-            const elementos = document.querySelectorAll('#elementos-container .input-group');
+    const formulaElementos = {};
+    const elementos = document.querySelectorAll('#elementos-container .input-group');
 
-            elementos.forEach((elem, index) => {
-                const identificador = elem.querySelector('input[id$="-id"]').value;
-                const descricao = elem.querySelector('input[id$="-desc"]').value;
-                const isConstante = elem.querySelector('input[id$="-is-constant"]').checked;
-                const valor = parseFloat(elem.querySelector('input[id$="-value"]').value) || null;
+    elementos.forEach((elem, index) => {
+        const identificador = elem.querySelector('input[id$="-id"]').value;
+        const descricao = elem.querySelector('input[id$="-desc"]').value;
+        const isConstante = elem.querySelector('input[id$="-is-constant"]').checked;
+        const valor = parseFloat(elem.querySelector('input[id$="-value"]').value) || null;
 
-                formulaElementos[`elem-${index}`] = {
-                    identificador,
-                    desc: descricao,
-                    isConstante,
-                    valor
-                };
-            });
+        formulaElementos[`elem-${index}`] = {
+            identificador,
+            desc: descricao,
+            isConstante,
+            valor,
+        };
+    });
 
-            const formula = {
-                nome,
-                desc,
-                categoria,
-                expressao,
-                elementos: formulaElementos
-            };
+    const formula = {
+        nome,
+        desc,
+        categoria,
+        expressao,
+        elementos: formulaElementos,
+    };
 
-            try {
-                if (formulaIdBeingEdited) {
-                    // Se estamos editando uma fórmula, usamos `update` para sobrescrever a fórmula existente
-                    await update(ref(database, 'formulas/' + formulaIdBeingEdited), formula);
-                    console.log('Fórmula editada com sucesso!');
-                } else {
-                    // Se não estivermos editando, criamos uma nova fórmula
-                    const formulaRef = push(ref(database, 'formulas'));
-                    await set(formulaRef, formula);
-                    console.log('Fórmula salva com sucesso!');
-                }
-
-                loadFormulas();  // Atualiza a lista de fórmulas
-                resetForm();  // Limpa o formulário e reseta o estado
-            } catch (error) {
-                console.log('Erro ao salvar fórmula:', error);
-                alert('Erro ao salvar fórmula.');
-            }
+    try {
+        const user = auth.currentUser;
+        if (!user) {
+            alert('Você precisa estar logado para salvar fórmulas.');
+            return;
         }
+
+        const userFormulasPath = `users/${user.uid}/formulas`;
+
+        if (formulaIdBeingEdited) {
+            // Atualiza fórmula existente
+            await update(ref(database, `${userFormulasPath}/${formulaIdBeingEdited}`), formula);
+            console.log('Fórmula editada com sucesso!');
+        } else {
+            // Cria uma nova fórmula
+            const formulaRef = push(ref(database, userFormulasPath));
+            await set(formulaRef, formula);
+            console.log('Fórmula salva com sucesso!');
+        }
+
+        loadFormulas(); // Atualiza a lista de fórmulas
+        resetForm();    // Reseta o formulário
+    } catch (error) {
+        console.error('Erro ao salvar fórmula:', error);
+        alert('Erro ao salvar fórmula.');
+    }
+}
+
+
+
 
         // Função para adicionar elementos
         function addElemento() {
@@ -185,177 +354,231 @@
 
         // Carregar fórmulas salvas do banco de dados
         async function loadFormulas() {
-            try {
-                const snapshot = await get(ref(database, 'formulas'));
-                if (snapshot.exists()) {
-                    const formulas = snapshot.val();
-                    const list = document.getElementById('formula-list');
-                    list.innerHTML = '';  // Limpa a lista antes de atualizar
-
-                    if (formulas && typeof formulas === 'object') {
-                        Object.keys(formulas).forEach(id => {
-                            const formula = formulas[id];
-                            const li = document.createElement('li');
-                            li.classList.add('list-group-item', 'mb-3', 'p-3', 'border', 'rounded');
-
-                            li.innerHTML = `
-                                <div class="d-flex justify-content-between">
-                                    <div id="salvas">
-                                        <strong>${formula.nome}</strong> - ${formula.desc}<br>
-                                        <small>Expressão: ${formula.expressao}</small><br>
-                                        <small>Categoria: ${formula.categoria}</small>
-                                    </div>
-                                    <button class="btn btn-outline-primary btn-sm" onclick="window.calculateFormula('${id}')">
-                                        Calcular
-                                    </button>
-                                    <button class="btn btn-outline-warning btn-sm" onclick="window.editFormula('${id}')">
-                                        Editar
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="window.deleteFormula('${id}')">
-                                        Excluir
-                                    </button>
-                                </div>
-                            `;
-                            list.appendChild(li);
-                        });
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao carregar fórmulas:', error);
-            }
+    try {
+        const user = auth.currentUser;
+        if (!user) {
+            alert('Você precisa estar logado para ver suas fórmulas.');
+            return;
         }
 
-        // Função para calcular a fórmula
-        window.calculateFormula = async function (id) {
-            try {
-                const snapshot = await get(ref(database, 'formulas/' + id));
-                if (snapshot.exists()) {
-                    const formula = snapshot.val();
-                    const originalExpression = formula.expressao;
-                    let modifiedExpression = formula.expressao;
+        const snapshot = await get(ref(database, 'users/' + user.uid + '/formulas'));
+        if (snapshot.exists()) {
+            const formulas = snapshot.val();
+            const list = document.getElementById('formula-list');
+            list.innerHTML = '';  // Limpa a lista
 
-                    // Substituir os identificadores pelos valores ou deixar o identificador se o valor for inválido
-                    if (formula.elementos) {
-                        Object.values(formula.elementos).forEach((elemento) => {
-                            const regex = new RegExp(`\\b${elemento.identificador}\\b`, 'g');
-                            const valor = (elemento.valor !== null && elemento.valor !== undefined) ? elemento.valor : elemento.identificador;
-                            modifiedExpression = modifiedExpression.replace(regex, valor);
-                        });
-                    }
+            if (formulas && typeof formulas === 'object') {
+                Object.keys(formulas).forEach(id => {
+                    const formula = formulas[id];
+                    const li = document.createElement('li');
+                    li.classList.add('list-group-item', 'mb-3', 'p-3', 'border', 'rounded');
 
-                    // Verificar se a expressão é válida e pode ser calculada
-                    const finalExpression = modifiedExpression.includes('=') ? modifiedExpression.split('=')[1].trim() : modifiedExpression;
-                    
-                    // Tentar avaliar a expressão com segurança
-                    let result;
-                    try {
-                        result = eval(finalExpression);
-                    } catch (error) {
-                        console.error('Erro ao calcular a expressão:', error);
-                        result = 'Erro no cálculo';
-                    }
-
-                    // Exibir o resultado
-                    showCalculationResult(originalExpression, modifiedExpression, result);
-                }
-            } catch (error) {
-                console.error('Erro ao carregar fórmula para cálculo:', error);
-            }
-        };
-
-        // Função para exibir o resultado do cálculo
-        function showCalculationResult(original, modified, result) {
-            const resultContainer = document.getElementById('calculation-result');
-            resultContainer.innerHTML = `
-                <p><strong>Expressão Original:</strong> ${original}</p>
-                <p><strong>Expressão Modificada:</strong> ${modified}</p>
-                <p><strong>Resultado:</strong> ${result}</p>
-            `;
-        }
-
-        // Função para editar a fórmula
-        window.editFormula = async function (id) {
-            formulaIdBeingEdited = id;
-            const snapshot = await get(ref(database, 'formulas/' + id));
-            if (snapshot.exists()) {
-                const formula = snapshot.val();
-                document.getElementById('formula-name').value = formula.nome;
-                document.getElementById('formula-desc').value = formula.desc;
-                document.getElementById('formula-category').value = formula.categoria;
-                document.getElementById('formula-expression').value = formula.expressao;
-
-                // Preenche os elementos na interface
-                const elementosContainer = document.getElementById('elementos-container');
-                elementosContainer.innerHTML = '';  // Limpa os elementos antes de adicionar
-                Object.keys(formula.elementos).forEach((key, index) => {
-                    const elem = formula.elementos[key];
-                    const group = document.createElement('div');
-                    group.className = 'input-group mb-3';
-                    group.id = `elem-${index}`;
-                    group.innerHTML = `
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Identificador</span>
+                    li.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <div id="salvas">
+                                <strong>${formula.nome}</strong> - ${formula.desc}<br>
+                                <small>Expressão: ${formula.expressao}</small><br>
+                                <small>Categoria: ${formula.categoria}</small>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm" onclick="window.calculateFormula('${id}')">
+                                Calcular
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm" onclick="window.editFormula('${id}')">
+                                Editar
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="window.deleteFormula('${id}')">
+                                Excluir
+                            </button>
                         </div>
-                        <input type="text" class="form-control" value="${elem.identificador}" id="elem-${index}-id" />
-
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Descrição</span>
-                        </div>
-                        <input type="text" class="form-control" value="${elem.desc}" id="elem-${index}-desc" />
-
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Constante</span>
-                        </div>
-                        <input type="checkbox" class="form-check-input" ${elem.isConstante ? 'checked' : ''} id="elem-${index}-is-constant" />
-
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Valor</span>
-                        </div>
-                        <input type="number" class="form-control" value="${elem.valor}" id="elem-${index}-value" />
-                        
-                        <button type="button" class="btn btn-outline-danger" onclick="removeElemento('${group.id}')">
-                            <i class="bi bi-x-circle"></i> Remover
-                        </button>
                     `;
-                    elementosContainer.appendChild(group);
+                    list.appendChild(li);
                 });
             }
-        };
-
-        // Função para excluir fórmula
-        window.deleteFormula = async function (id) {
-            if (confirm('Tem certeza que deseja excluir esta fórmula?')) {
-                try {
-                    await remove(ref(database, 'formulas/' + id));
-                    loadFormulas();
-                } catch (error) {
-                    console.error('Erro ao excluir fórmula:', error);
-                }
-            }
-        };
-
-        // Função para resetar o formulário
-        function resetForm() {
-            document.getElementById('formula-name').value = '';
-            document.getElementById('formula-desc').value = '';
-            document.getElementById('formula-category').value = '';
-            document.getElementById('formula-expression').value = '';
-            document.getElementById('elementos-container').innerHTML = '';
-            formulaIdBeingEdited = null;
         }
+    } catch (error) {
+        console.error('Erro ao carregar fórmulas:', error);
+    }
+}
 
-        // Adicionando o listener de clique para o botão de adicionar elemento
-        document.getElementById('add-element-btn').addEventListener('click', addElemento);
 
-        // Inicializar a lista de fórmulas
-        loadFormulas();
+// Função para calcular a fórmula
+window.calculateFormula = async function (id) {
+    try {
+        const snapshot = await get(ref(database, 'users/' + auth.currentUser.uid + '/formulas/' + id));
+        if (snapshot.exists()) {
+            const formula = snapshot.val();
+            const originalExpression = formula.expressao;
+            let modifiedExpression = originalExpression;
 
-        // Salvar a fórmula quando o botão de salvar for clicado
-        document.getElementById('save-formula-btn').addEventListener('click', saveFormula);
+            // Substituir variáveis pelos seus valores, mantendo o identificador caso não tenha valor
+            if (formula.elementos) {
+                Object.values(formula.elementos).forEach((elemento) => {
+                    const regex = new RegExp(`\\b${elemento.identificador}\\b`, 'g');
+                    const valor = (elemento.valor !== null && elemento.valor !== undefined) ? elemento.valor : elemento.identificador;
+                    modifiedExpression = modifiedExpression.replace(regex, valor);
+                });
+            }
+
+            // Avaliar a expressão matemática
+            let result;
+            try {
+                // Extração apenas da parte matemática, caso contenha `=`
+                let evalExpression = modifiedExpression;
+                if (modifiedExpression.includes('=')) {
+                    evalExpression = modifiedExpression.split('=')[1].trim();
+                }
+
+                result = eval(evalExpression); // Avalia a expressão matemática
+            } catch (error) {
+                result = 'Erro no cálculo';
+            }
+
+            // Exibe os resultados
+            showCalculationResult(originalExpression, modifiedExpression, result);
+        }
+    } catch (error) {
+        console.error('Erro ao calcular fórmula:', error);
+    }
+};
+
+
+      let isResultVisible = false;  // Controle de visibilidade do resultado
+
+// Esta é a função que alterna a visibilidade do resultado
+function showCalculationResult(original, modified, result) {
+    const resultContainer = document.getElementById('calculation-result');
+    
+    // Limpar o conteúdo anterior da área de resultado
+    resultContainer.innerHTML = '';
+    
+    // Verificar o estado e alternar visibilidade
+    if (isResultVisible) {
+        resultContainer.innerHTML = '';  // Se estiver visível, escondemos
+        isResultVisible = false;  // Atualizamos o estado para oculto
+    } else {
+        resultContainer.innerHTML = `
+            <p><strong>Expressão Original:</strong> ${original}</p>
+            <p><strong>Expressão Modificada:</strong> ${modified}</p>
+            <p><strong>Resultado:</strong> ${result}</p>
+        `;
+        isResultVisible = true;  // Atualizamos o estado para visível
+    }
+}
+
+        // Função para editar a fórmula
+        // Função para editar a fórmula
+        window.editFormula = async function (id) {
+    formulaIdBeingEdited = id;  // Marca a fórmula como sendo editada
+    const snapshot = await get(ref(database, 'users/' + auth.currentUser.uid + '/formulas/' + id));
+    if (snapshot.exists()) {
+        const formula = snapshot.val();
+        document.getElementById('formula-name').value = formula.nome;
+        document.getElementById('formula-desc').value = formula.desc;
+        document.getElementById('formula-category').value = formula.categoria;
+        document.getElementById('formula-expression').value = formula.expressao;
+
+        const elementosContainer = document.getElementById('elementos-container');
+        elementosContainer.innerHTML = '';  // Limpa os elementos anteriores
+
+        // Preenche os elementos
+        Object.keys(formula.elementos).forEach((key, index) => {
+            const elem = formula.elementos[key];
+            const group = document.createElement('div');
+            group.className = 'input-group mb-3';
+            group.id = `elem-${index}`;
+            group.innerHTML = `
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Identificador</span>
+                </div>
+                <input type="text" class="form-control" value="${elem.identificador}" id="elem-${index}-id" />
+                
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Descrição</span>
+                </div>
+                <input type="text" class="form-control" value="${elem.desc}" id="elem-${index}-desc" />
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Constante</span>
+                </div>
+                <input type="checkbox" class="form-check-input" ${elem.isConstante ? 'checked' : ''} id="elem-${index}-is-constant" />
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Valor</span>
+                </div>
+                <input type="number" class="form-control" value="${elem.valor || ''}" id="elem-${index}-value" />
+
+                <button type="button" class="btn btn-outline-danger" onclick="removeElemento('elem-${index}')">
+                    <i class="bi bi-x-circle"></i> Remover
+                </button>
+            `;
+            elementosContainer.appendChild(group);
+        });
+
+        document.getElementById('cancel-edit-btn').style.display = 'inline-block';
+    }
+};
+
+
+// Função para cancelar a edição
+document.getElementById('cancel-edit-btn').addEventListener('click', function() {
+    // Restaura o formulário para seu estado inicial
+    resetForm();
+
+    // Esconde o botão de "Cancelar"
+    document.getElementById('cancel-edit-btn').style.display = 'none';
+});
+
+// Função para resetar o formulário
+function resetForm() {
+    formulaIdBeingEdited = null;
+    document.getElementById('formula-name').value = '';
+    document.getElementById('formula-desc').value = '';
+    document.getElementById('formula-category').value = '';
+    document.getElementById('formula-expression').value = '';
+    document.getElementById('elementos-container').innerHTML = '';
+}
+
+
+        // Função para excluir a fórmula
+        window.deleteFormula = async function(id) {
+    const confirmation = confirm("Tem certeza de que deseja excluir esta fórmula?");
+    if (confirmation) {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Você precisa estar logado para excluir fórmulas.');
+                return;
+            }
+
+            // Caminho para a fórmula no Firebase
+            const formulaRef = ref(database, 'users/' + user.uid + '/formulas/' + id);
+
+            // Verifica se a fórmula realmente existe antes de tentar excluir
+            const snapshot = await get(formulaRef);
+            if (!snapshot.exists()) {
+                alert('Fórmula não encontrada!');
+                return;
+            }
+
+            // Remove a fórmula do banco de dados
+            await remove(formulaRef);
+            alert('Fórmula excluída com sucesso!');
+
+            // Atualiza a lista de fórmulas
+            loadFormulas();
+        } catch (error) {
+            console.error('Erro ao excluir a fórmula:', error);
+            alert('Houve um erro ao tentar excluir a fórmula. Tente novamente.');
+        }
+    }
+};
+
+        // Ações de clique para mostrar/ocultar
+        document.getElementById("add-element-btn").addEventListener("click", addElemento);
+        document.getElementById("save-formula-btn").addEventListener("click", saveFormula);
+
+        loadFormulas(); // Carregar fórmulas salvas ao iniciar a página
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
