@@ -94,6 +94,9 @@ body {
 #all {
     background-color: #ffffff;
     border-bottom: 2px solid #2B16A3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 15vh;
 }
 
@@ -329,13 +332,6 @@ p {
 .logged-in {
     display: none;
 }
-#all {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Certifique-se que o contêiner ocupe toda a altura da tela */
-}
-
 .container {
     width: 100%;
     max-width: 1200px; /* Ajuste conforme a largura máxima que deseja */
