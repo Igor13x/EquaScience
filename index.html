@@ -195,32 +195,35 @@ onAuthStateChanged(auth, (user) => {
         });
 
         // Função de login de usuário
-        function loginUser() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        window.loginUser = async function() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log('Usuário logado:', userCredential.user);
+        showContentAfterLogin(); // Exibe o conteúdo depois do login
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        alert('Erro ao fazer login: ' + error.message);
+    }
+};
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    console.log("Login bem-sucedido");
-                })
-                .catch((error) => {
-                    console.error("Erro no login:", error.message);
-                });
-        }
 
         // Função de registro de usuário
-        function registerUser() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        window.registerUser = async function() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    console.log("Usuário registrado com sucesso");
-                })
-                .catch((error) => {
-                    console.error("Erro no registro:", error.message);
-                });
-        }
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log('Usuário cadastrado:', userCredential.user);
+        showContentAfterLogin(); // Exibe o conteúdo após o cadastro
+    } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        alert('Erro ao cadastrar: ' + error.message);
+    }
+};
 
 // Chama a função de verificação no carregamento da página
 window.addEventListener('load', function() {
