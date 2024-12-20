@@ -235,3 +235,65 @@ p {
 .accordion-button.collapsed:after {
     transform: rotate(-180deg);
 }
+#elementos-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#elementos-container .input-group {
+    display: flex;
+    gap: 15px; /* Espaçamento entre os campos */
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+#elementos-container .input-group input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    flex-grow: 1; /* Faz com que os inputs ocupem o espaço disponível */
+}
+
+#elementos-container .input-group input[type="checkbox"] {
+    margin: auto; /* Centraliza o checkbox */
+}
+
+#elementos-container .input-group label {
+    margin-left: 5px; /* Adiciona um pequeno espaço entre o checkbox e o texto */
+}
+
+#elementos-container .input-group button {
+    padding: 6px 10px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#elementos-container .input-group button:hover {
+    background-color: #d63838;
+}
+/* Adiciona uma borda e sombra aos itens da lista */
+.list-group-item {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+.list-group-item:hover {
+    background-color: #f1f3f5;
+}
+
+/* Botões pequenos e com espaçamento */
+.btn-sm {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}

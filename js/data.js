@@ -1,20 +1,17 @@
-import { database } from './firebase-config';
-import { ref, set, push, get, remove, child } from 'firebase/database';
+// Inicializar Firebase (usando a variável global `firebase`)
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.getDatabase(app);
 
-// Função para salvar uma fórmula no Firebase
+// Exemplo de salvar uma fórmula
 async function saveFormula(formula) {
-    try {
-        // Referência para salvar a fórmula na coleção 'formulas'
-        const formulaRef = push(ref(database, 'formulas'));  // Usa push para criar uma chave única
-        await set(formulaRef, formula);  // Salva a fórmula no Firebase
-        console.log("Fórmula salva com sucesso!");
-    } catch (error) {
-        console.error("Erro ao salvar fórmula:", error);
-    }
+    const formulaRef = firebase.push(firebase.ref(database, 'formulas'));
+    await firebase.set(formulaRef, formula);
+    console.log("Fórmula salva com sucesso!");
 }
 
+
 // Função para carregar todas as fórmulas do Firebase
-async function loadFormulas() {
+export async function loadFormulas() {
     try {
         const snapshot = await get(ref(database, 'formulas')); // Pega todas as fórmulas
         if (snapshot.exists()) {
@@ -29,11 +26,11 @@ async function loadFormulas() {
 }
 
 // Função para excluir uma fórmula com base no id
-async function deleteFormula(id) {
+export async function deleteFormula(id) {
     try {
         // Referência para a fórmula específica
         const formulaRef = ref(database, 'formulas/' + id);
-        await remove(formulaRef);  // Exclui a fórmula
+        await remove(formulaRef); // Exclui a fórmula
         console.log("Fórmula excluída com sucesso!");
     } catch (error) {
         console.error("Erro ao excluir fórmula:", error);
@@ -41,11 +38,11 @@ async function deleteFormula(id) {
 }
 
 // Função para atualizar uma fórmula no Firebase
-async function updateFormula(id, updatedFormula) {
+export async function updateFormula(id, updatedFormula) {
     try {
         // Referência para a fórmula específica
         const formulaRef = ref(database, 'formulas/' + id);
-        await set(formulaRef, updatedFormula);  // Atualiza a fórmula
+        await set(formulaRef, updatedFormula); // Atualiza a fórmula
         console.log("Fórmula atualizada com sucesso!");
     } catch (error) {
         console.error("Erro ao atualizar fórmula:", error);
@@ -53,16 +50,16 @@ async function updateFormula(id, updatedFormula) {
 }
 
 // Função para favoritar uma fórmula
-async function favoriteFormula(id) {
+export async function favoriteFormula(id) {
     try {
         const formulaRef = ref(database, 'formulas/' + id);
-        const snapshot = await get(formulaRef);  // Pega a fórmula específica
+        const snapshot = await get(formulaRef); // Pega a fórmula específica
 
         if (snapshot.exists()) {
             const formula = snapshot.val();
-            formula.favorita = true;  // Marca a fórmula como favorita
+            formula.favorita = true; // Marca a fórmula como favorita
 
-            await set(formulaRef, formula);  // Atualiza a fórmula com o status de favorito
+            await set(formulaRef, formula); // Atualiza a fórmula com o status de favorito
             console.log("Fórmula favoritada com sucesso!");
         } else {
             console.log("Fórmula não encontrada.");
@@ -71,6 +68,3 @@ async function favoriteFormula(id) {
         console.error("Erro ao favoritar fórmula:", error);
     }
 }
-
-// Exporta as funções para que possam ser usadas em outros arquivos
-export { saveFormula, loadFormulas, deleteFormula, updateFormula, favoriteFormula };
