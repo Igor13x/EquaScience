@@ -140,6 +140,8 @@ const database = getDatabase(app);
 
 let formulaIdBeingEdited = null;  // Declaração global da variável
 let currentUserId = 'defaultUser';  // Define o "defaultUser" como padrão até que o usuário faça login
+let isEditingPublicFormula = false; // Determina se a fórmula sendo editada é pública
+
 
 const setUserRole = (userId, role) => {
   const db = getDatabase();
@@ -429,15 +431,40 @@ async function saveEditedFormula() {
     };
 
     try {
-        await update(ref(database, `formulas/public/${formulaIdBeingEdited}`), formula);
-        console.log('Fórmula pública atualizada com sucesso!');
-        loadPublicFormulas();  // Recarregar fórmulas públicas
-        resetForm();    // Reseta o formulário de edição
+        const user = auth.currentUser; // Obtém o usuário atual
+
+        if (!formulaIdBeingEdited) {
+            alert('Nenhuma fórmula para salvar.');
+            return;
+        }
+
+        if (isEditingPublicFormula) {
+            // Salva no banco de dados público
+            await update(ref(database, `formulas/public/${formulaIdBeingEdited}`), formula);
+            console.log('Fórmula pública atualizada com sucesso!');
+        } else if (user) {
+            // Salva no banco de dados privado do usuário
+            await update(ref(database, `users/${user.uid}/formulas/${formulaIdBeingEdited}`), formula);
+            console.log('Fórmula privada atualizada com sucesso!');
+        } else {
+            alert('Erro: Não foi possível determinar o local de salvamento.');
+        }
+
+        // Recarregar fórmulas
+        if (isEditingPublicFormula) {
+            loadPublicFormulas(); // Recarrega fórmulas públicas
+        } else {
+            loadPrivateFormulas(); // Função para recarregar as fórmulas privadas
+        }
+
+        resetForm(); // Reseta o formulário de edição
+
     } catch (error) {
-        console.error('Erro ao salvar fórmula pública:', error);
-        alert('Erro ao salvar fórmula pública: ' + error.message);
+        console.error('Erro ao salvar fórmula:', error);
+        alert('Erro ao salvar fórmula: ' + error.message);
     }
 }
+
 
 // Função para autenticar o defaultUser
 async function authenticateDefaultUser() {
@@ -832,15 +859,25 @@ function showCalculationResult(original, modified, result) {
 }
 window.editFormula = async function (formulaId) {
     try {
-        const snapshot = await get(ref(database, `formulas/public/${formulaId}`));
+        const user = auth.currentUser; // Obtem o usuário atual
+        let snapshot;
+
+        // Verifica se a fórmula é pública
+        snapshot = await get(ref(database, `formulas/public/${formulaId}`));
+        if (!snapshot.exists() && user) {
+            // Se não for pública, tenta carregar do espaço privado do usuário
+            snapshot = await get(ref(database, `users/${user.uid}/formulas/${formulaId}`));
+        }
+
         const formula = snapshot.val();
 
         if (!formula) {
             console.error('Fórmula não encontrada.');
+            alert('Fórmula não encontrada.');
             return;
         }
 
-        // Preenche os campos do formulário
+        // Preenche os campos do formulário com os dados da fórmula
         document.getElementById('formula-name').value = formula.nome;
         document.getElementById('formula-desc').value = formula.desc;
         document.getElementById('formula-category').value = formula.categoria;
@@ -850,7 +887,7 @@ window.editFormula = async function (formulaId) {
         const elementosContainer = document.getElementById('elementos-container');
         elementosContainer.innerHTML = '';
 
-        // Itera pelos elementos (tratando como objeto)
+        // Adiciona os elementos, se existirem
         if (formula.elementos && typeof formula.elementos === 'object') {
             Object.keys(formula.elementos).forEach((key) => {
                 const elem = formula.elementos[key];
@@ -862,11 +899,16 @@ window.editFormula = async function (formulaId) {
         // Define o ID da fórmula que está sendo editada
         formulaIdBeingEdited = formulaId;
 
+        // Define se a fórmula é pública ou privada (para salvamento posterior)
+        isEditingPublicFormula = snapshot.key.startsWith('formulas/public');
+
     } catch (error) {
-        console.error('Erro ao editar fórmula pública:', error);
-        alert('Erro ao carregar fórmula pública para edição.');
+        console.error('Erro ao carregar fórmula para edição:', error);
+        alert('Erro ao carregar fórmula para edição.');
     }
 };
+
+
 
 
 // Função para cancelar a edição
