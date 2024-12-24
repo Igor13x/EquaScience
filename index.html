@@ -551,14 +551,8 @@ async function loadFormulas() {
               <small>Expressão: ${formula.expressao}</small><br>
               <small>Categoria: ${formula.categoria}</small>
             </div>
-            <button class="btn btn-outline-primary btn-sm" onclick="window.calculateFormula('${id}')">
-              Calcular
-            </button>
             <button class="btn btn-outline-warning btn-sm" onclick="window.editFormula('${id}')">
               Editar
-            </button>
-            <button class="btn btn-outline-danger btn-sm" onclick="window.deleteFormula('${id}')">
-              Excluir
             </button>
           </div>
         `;
@@ -748,40 +742,39 @@ window.calculateFormula = async function (id) {
 async function loadPublicFormulas() {
     try {
         const snapshot = await get(ref(database, 'formulas/public'));
-        if (snapshot.exists()) {
-            const formulas = snapshot.val();
-            const list = document.getElementById('formula-list');
-            list.innerHTML = '';  // Limpa a lista
+        const formulas = snapshot.exists() ? snapshot.val() : {};
 
-            if (formulas && typeof formulas === 'object') {
-                Object.keys(formulas).forEach(id => {
-                    const formula = formulas[id];
-                    const li = document.createElement('li');
-                    li.classList.add('list-group-item', 'mb-3', 'p-3', 'border', 'rounded');
+        const list = document.getElementById('formula-list');
+        list.innerHTML = '';  // Limpa a lista
 
-                    li.innerHTML = `
-                        <div class="d-flex justify-content-between">
-                            <div id="salvas">
-                                <strong>${formula.nome}</strong> - ${formula.desc}<br>
-                                <small>Expressão: ${formula.expressao}</small><br>
-                                <small>Categoria: ${formula.categoria}</small>
-                            </div>
-                            <button class="btn btn-outline-primary btn-sm" onclick="window.calculateFormula('${id}')">
-                                Calcular
-                            </button>
-                            <button class="btn btn-outline-warning btn-sm" onclick="window.editFormula('${id}')">
-                                Editar
-                            </button>
+        if (formulas && typeof formulas === 'object') {
+            Object.keys(formulas).forEach(id => {
+                const formula = formulas[id];
+                const li = document.createElement('li');
+                li.classList.add('list-group-item', 'mb-3', 'p-3', 'border', 'rounded');
+
+                li.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <div id="salvas">
+                            <strong>${formula.nome}</strong> - ${formula.desc}<br>
+                            <small>Expressão: ${formula.expressao}</small><br>
+                            <small>Categoria: ${formula.categoria}</small>
                         </div>
-                    `;
-                    list.appendChild(li);
-                });
-            }
+                        <button class="btn btn-outline-warning btn-sm" onclick="window.editFormula('${id}')">
+                            Editar
+                        </button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
         }
     } catch (error) {
         console.error('Erro ao carregar fórmulas públicas:', error);
     }
 }
+
+
+
 // Função para avaliar a expressão de maneira segura
 function safeEval(expression) {
     try {
