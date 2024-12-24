@@ -44,6 +44,22 @@ body{
     opacity: 0.5;
 }
 
+#botaoVoltar{
+    color:red;
+    border:none;
+    background: none;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    transition: 200ms ease-in-out  ;
+}
+#botaoVoltar:hover{
+    opacity: 1;
+}
+#botaoVoltar > h5{
+    margin-left: 5px;
+    margin-bottom: 0;
+}
 
 .a{
     text-decoration: none;
@@ -54,10 +70,9 @@ body{
     font-size: 20px;
 }
 .imglogo {
-    float: center;
     display: flex;
     margin: auto;
-    width: 10rem;
+    width: 11rem;
 }
 
 #select {
@@ -82,8 +97,6 @@ body{
     font-weight: bold;
     color: #2B16A3;
     font-size: 2rem;
-    margin-top: 2rem;
-    margin-left: 2rem;
 }
 
 body {
@@ -94,10 +107,6 @@ body {
 #all {
     background-color: #ffffff;
     border-bottom: 2px solid #2B16A3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 15vh;
 }
 
 #dark-card2 {
@@ -163,8 +172,6 @@ body {
     /* width: 80%; */
 }
 #content-container {
-    margin-top: 2rem;
-    padding: 1rem;
     border: 2px solid #2B16A3;
     border-radius: 18px;
     background-color: #ffffff;
@@ -331,17 +338,6 @@ p {
 /* Exemplo de como esconder a tela de login */
 .logged-in {
     display: none;
-}
-.container {
-    width: 100%;
-    max-width: 1200px; /* Ajuste conforme a largura máxima que deseja */
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-#login-container {
-    /* Aqui você pode garantir que o login ocupe a altura adequada antes de ser removido */
-    display: block;
 }
 
 #content-container {
