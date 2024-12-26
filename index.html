@@ -567,7 +567,7 @@ function createElementGroup(idPrefix, index = null, elem = {}) {
 
         // Função para carregar fórmulas com escuta em tempo real
         // Função para carregar fórmulas com escuta em tempo real
-async function loadFormulas() {
+        async function loadFormulas() {
   try {
     const user = auth.currentUser;
     if (!user) {
@@ -581,7 +581,7 @@ async function loadFormulas() {
     const list = document.getElementById('formula-list');
     list.innerHTML = '';  // Limpa a lista
 
-    // Carrega fórmulas públicas
+    // Carrega e exibe fórmulas públicas
     if (publicFormulas && typeof publicFormulas === 'object') {
       Object.keys(publicFormulas).forEach(id => {
         const formula = publicFormulas[id];
@@ -614,8 +614,14 @@ async function loadFormulas() {
     if (privateFormulas && typeof privateFormulas === 'object') {
       Object.keys(privateFormulas).forEach(id => {
         const formula = privateFormulas[id];
+
+        // Verifica se a fórmula já existe na lista (evita duplicação)
+        const existingFormula = list.querySelector(`[data-id="${id}"]`);
+        if (existingFormula) return; // Se já existe, não adiciona novamente
+
         const li = document.createElement('li');
         li.classList.add('list-group-item', 'mb-3', 'p-3', 'border', 'rounded');
+        li.setAttribute('data-id', id);  // Atribui um identificador único ao elemento
 
         li.innerHTML = `
           <div class="d-flex justify-content-between align-items-center">
